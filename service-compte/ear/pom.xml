@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>itu.banque.compte</groupId>
+        <artifactId>service-compte</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>service-compte-ear</artifactId>
+    <packaging>ear</packaging>
+    <name>service-compte - ear</name>
+    <description>This is the EAR POM file</description>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>itu.banque.api</groupId>
+            <artifactId>api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>service-compte-ejb</artifactId>
+            <type>ejb</type>
+        </dependency>
+
+        <!-- Depend on the EJB module and WAR so that we can package them -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>service-compte-web</artifactId>
+            <type>war</type>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <finalName>${project.parent.artifactId}</finalName>
+        <plugins>
+            <!--EAR plugin: format of output file -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-ear-plugin</artifactId>
+                <version>${version.ear.plugin}</version>
+                <configuration>
+                    <!-- Tell Maven we are using Jakarta EE -->
+                    <version>10</version>
+                    <!-- Use Jakarta EE ear libraries as needed. Jakarta EE ear libraries
+                        are in easy way to package any libraries needed in the ear, and automatically
+                        have any modules (EJB-JARs and WARs) use them -->
+                    <defaultLibBundleDir>lib</defaultLibBundleDir>
+                    <modules>
+                    <!-- Default context root of the web app is /service-compte-web.
+                        If a custom context root is needed, uncomment the following snippet to
+                        register our War as a web module and set the contextRoot property -->
+                    <!--
+                    <webModule>
+                        <groupId>${project.groupId}</groupId>
+                        <artifactId>service-compte-web</artifactId>
+                        <contextRoot>/service-compte</contextRoot>
+                    </webModule>
+                    -->
+                    </modules>
+                    <outputFileNameMapping>@{artifactId}@@{dashClassifier?}@.@{extension}@</outputFileNameMapping>
+                </configuration>
+            </plugin>
+            <!-- The WildFly plug-in deploys your ear to a local WildFly / JBoss EAP container.
+                Due to Maven's lack of intelligence with EARs we need to configure
+                the WildFly Maven plug-in to skip deployment for all modules. We then enable
+                it specifically in the ear module. -->
+            <plugin>
+                <groupId>org.wildfly.plugins</groupId>
+                <artifactId>wildfly-maven-plugin</artifactId>
+                <configuration>
+                    <skip>false</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

@@ -1,0 +1,8 @@
+<configuration>
+    <authentication-client xmlns="urn:elytron:client:1.2"/>
+    <ejb-client xmlns="urn:jboss:ejb-client:1.4">
+        <connections>
+            <connection uri="http://localhost:8082" />
+        </connections>
+    </ejb-client>
+</configuration>

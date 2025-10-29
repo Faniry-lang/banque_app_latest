@@ -1,0 +1,6 @@
+/home/faniry/Documents/GitHub/banque_app/service-central/ejb/src/main/java/itu/banque/central/daos/ActionRoleDao.java
+/home/faniry/Documents/GitHub/banque_app/service-central/ejb/src/main/java/itu/banque/central/daos/DirectionDao.java
+/home/faniry/Documents/GitHub/banque_app/service-central/ejb/src/main/java/itu/banque/central/entities/ActionRole.java
+/home/faniry/Documents/GitHub/banque_app/service-central/ejb/src/main/java/itu/banque/central/entities/Direction.java
+/home/faniry/Documents/GitHub/banque_app/service-central/ejb/src/main/java/itu/banque/central/services/ActionRoleService.java
+/home/faniry/Documents/GitHub/banque_app/service-central/ejb/src/main/java/itu/banque/central/services/DirectionService.java

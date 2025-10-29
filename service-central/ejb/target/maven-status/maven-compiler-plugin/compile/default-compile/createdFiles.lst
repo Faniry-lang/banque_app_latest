@@ -1,0 +1,6 @@
+itu/banque/central/services/ActionRoleService.class
+itu/banque/central/entities/Direction.class
+itu/banque/central/daos/ActionRoleDao.class
+itu/banque/central/services/DirectionService.class
+itu/banque/central/entities/ActionRole.class
+itu/banque/central/daos/DirectionDao.class

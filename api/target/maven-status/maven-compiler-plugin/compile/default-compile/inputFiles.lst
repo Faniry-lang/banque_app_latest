@@ -1,0 +1,16 @@
+/home/faniry/Documents/GitHub/banque_app/api/src/main/java/itu/banque/api/App.java
+/home/faniry/Documents/GitHub/banque_app/api/src/main/java/itu/banque/api/dtos/ActionRoleDto.java
+/home/faniry/Documents/GitHub/banque_app/api/src/main/java/itu/banque/api/dtos/CompteCourantDto.java
+/home/faniry/Documents/GitHub/banque_app/api/src/main/java/itu/banque/api/dtos/Devise.java
+/home/faniry/Documents/GitHub/banque_app/api/src/main/java/itu/banque/api/dtos/DirectionDto.java
+/home/faniry/Documents/GitHub/banque_app/api/src/main/java/itu/banque/api/dtos/TransactionCourantDto.java
+/home/faniry/Documents/GitHub/banque_app/api/src/main/java/itu/banque/api/dtos/TypeTransactionDto.java
+/home/faniry/Documents/GitHub/banque_app/api/src/main/java/itu/banque/api/dtos/UtilisateurDto.java
+/home/faniry/Documents/GitHub/banque_app/api/src/main/java/itu/banque/api/remote/ActionRoleServiceRemote.java
+/home/faniry/Documents/GitHub/banque_app/api/src/main/java/itu/banque/api/remote/CompteCourantServiceRemote.java
+/home/faniry/Documents/GitHub/banque_app/api/src/main/java/itu/banque/api/remote/DeviseServiceRemote.java
+/home/faniry/Documents/GitHub/banque_app/api/src/main/java/itu/banque/api/remote/DirectionServiceRemote.java
+/home/faniry/Documents/GitHub/banque_app/api/src/main/java/itu/banque/api/remote/TransactionCourantServiceRemote.java
+/home/faniry/Documents/GitHub/banque_app/api/src/main/java/itu/banque/api/remote/TypeTransactionServiceRemote.java
+/home/faniry/Documents/GitHub/banque_app/api/src/main/java/itu/banque/api/remote/UtilisateurServiceRemote.java
+/home/faniry/Documents/GitHub/banque_app/api/src/main/java/itu/banque/api/remote/UtilisateurSessionRemote.java

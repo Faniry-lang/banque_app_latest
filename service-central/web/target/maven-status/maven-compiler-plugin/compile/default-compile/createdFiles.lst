@@ -1,0 +1,6 @@
+itu/banque/central/filters/AuthenticationFilter.class
+itu/banque/central/servlets/HttpTransactionServlet.class
+itu/banque/central/servlets/LoginServlet.class
+itu/banque/central/servlets/LogoutServlet.class
+itu/banque/central/servlets/HttpTransactionServlet$1.class
+itu/banque/central/servlets/TransactionServlet.class

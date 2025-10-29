@@ -1,0 +1,15 @@
+itu/banque/compte/entities/TransactionCourant.class
+itu/banque/compte/entities/TypeTransaction.class
+itu/banque/compte/services/UtilisateurSession.class
+itu/banque/compte/daos/UtilisateurDao.class
+itu/banque/compte/services/TypeTransactionService.class
+itu/banque/compte/daos/TypeTransactionDao.class
+itu/banque/compte/services/TransactionCourantService.class
+itu/banque/compte/daos/TransactionCourantDao.class
+itu/banque/compte/entities/CompteCourant.class
+itu/banque/compte/entities/Utilisateur.class
+itu/banque/compte/daos/ClientDao.class
+itu/banque/compte/entities/Client.class
+itu/banque/compte/services/UtilisateurService.class
+itu/banque/compte/daos/CompteCourantDao.class
+itu/banque/compte/services/CompteCourantService.class

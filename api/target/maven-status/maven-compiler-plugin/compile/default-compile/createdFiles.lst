@@ -1,0 +1,16 @@
+itu/banque/api/remote/UtilisateurServiceRemote.class
+itu/banque/api/dtos/CompteCourantDto.class
+itu/banque/api/App.class
+itu/banque/api/dtos/ActionRoleDto.class
+itu/banque/api/dtos/DirectionDto.class
+itu/banque/api/remote/UtilisateurSessionRemote.class
+itu/banque/api/dtos/TypeTransactionDto.class
+itu/banque/api/remote/TypeTransactionServiceRemote.class
+itu/banque/api/dtos/TransactionCourantDto.class
+itu/banque/api/remote/DirectionServiceRemote.class
+itu/banque/api/remote/ActionRoleServiceRemote.class
+itu/banque/api/dtos/Devise.class
+itu/banque/api/remote/CompteCourantServiceRemote.class
+itu/banque/api/remote/TransactionCourantServiceRemote.class
+itu/banque/api/remote/DeviseServiceRemote.class
+itu/banque/api/dtos/UtilisateurDto.class
