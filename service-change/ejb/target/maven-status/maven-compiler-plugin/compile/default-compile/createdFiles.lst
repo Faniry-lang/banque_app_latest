@@ -1,2 +1,8 @@
+itu/banque/change/services/TauxVariationService.class
+itu/banque/change/TauxVariationFileManager$LocalDateAdapter.class
+itu/banque/change/TauxVariationFileManager$1.class
+itu/banque/change/DeviseFileManager$LocalDateAdapter.class
 itu/banque/change/services/DeviseService.class
+itu/banque/change/DeviseFileManager$1.class
 itu/banque/change/DeviseFileManager.class
+itu/banque/change/TauxVariationFileManager.class

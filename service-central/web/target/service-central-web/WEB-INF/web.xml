@@ -44,12 +44,67 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>CompteCourantServlet</servlet-name>
+    <servlet-class>itu.banque.central.servlets.CompteCourantServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CompteCourantServlet</servlet-name>
+    <url-pattern>/comptes-courants</url-pattern>
+  </servlet-mapping>
+
+
+  <servlet>
     <servlet-name>LogoutServlet</servlet-name>
     <servlet-class>itu.banque.central.servlets.LogoutServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>LogoutServlet</servlet-name>
     <url-pattern>/logout</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>CompteCourantDetailsServlet</servlet-name>
+    <servlet-class>itu.banque.central.servlets.CompteCourantDetailsServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CompteCourantDetailsServlet</servlet-name>
+    <url-pattern>/compte-courant-details</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>DeviseServlet</servlet-name>
+    <servlet-class>itu.banque.central.servlets.DeviseServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>DeviseServlet</servlet-name>
+    <url-pattern>/devises</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>TauxVariationServlet</servlet-name>
+    <servlet-class>itu.banque.central.servlets.TauxVariationServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>TauxVariationServlet</servlet-name>
+    <url-pattern>/taux-variation</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>PlafondServlet</servlet-name>
+    <servlet-class>itu.banque.central.servlets.PlafondServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>PlafondServlet</servlet-name>
+    <url-pattern>/plafonds</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>FraisBancaireServlet</servlet-name>
+    <servlet-class>itu.banque.central.servlets.FraisBancaireServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>FraisBancaireServlet</servlet-name>
+    <url-pattern>/frais-bancaire</url-pattern>
   </servlet-mapping>
 
 </web-app>

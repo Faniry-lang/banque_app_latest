@@ -11,7 +11,6 @@ import itu.banque.compte.entities.Utilisateur;
 import jakarta.ejb.EJB;
 import jakarta.ejb.Remove;
 import jakarta.ejb.Stateful;
-import jakarta.enterprise.context.SessionScoped;
 
 @Stateful
 public class UtilisateurSession implements UtilisateurSessionRemote {

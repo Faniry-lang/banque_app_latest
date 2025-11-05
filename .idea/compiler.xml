@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="service-change-web" />
+        <module name="service-compte-web" />
+        <module name="service-central-ear" />
+        <module name="service-pret-ejb" />
+        <module name="service-central-web" />
+        <module name="service-change-ejb" />
+        <module name="service-compte-ear" />
+        <module name="service-pret-ear" />
+        <module name="service-central-ejb" />
+        <module name="api" />
+        <module name="service-pret-web" />
+        <module name="service-change-ear" />
+        <module name="service-compte-ejb" />
+      </profile>
+    </annotationProcessing>
+  </component>
+</project>

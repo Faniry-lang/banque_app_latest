@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/api/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/api/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service-central/ear/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service-central/ear/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service-central/ejb/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service-central/ejb/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service-central/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service-central/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service-central/web/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service-central/web/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service-change/ear/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service-change/ear/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service-change/ejb/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service-change/ejb/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service-change/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service-change/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service-change/web/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service-change/web/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service-compte/ear/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service-compte/ear/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service-compte/ejb/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service-compte/ejb/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service-compte/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service-compte/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service-compte/web/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service-compte/web/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service-pret/ear/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service-pret/ear/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service-pret/ejb/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service-pret/ejb/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service-pret/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service-pret/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service-pret/web/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/service-pret/web/src/main/resources" charset="UTF-8" />
+  </component>
+</project>

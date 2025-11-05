@@ -1,0 +1,8 @@
+effectuerVirement
+    -créer objet virement
+    -mettre à jour statut virement (1 -> créer)
+    -vérifier plafond virement journalier
+    -vérifier solde
+    -créer objet mouvement avec source virement
+    -valider mouvement
+    -

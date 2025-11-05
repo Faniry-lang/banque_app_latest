@@ -59,7 +59,7 @@ public class LoginServlet extends HttpServlet  {
                 HttpSession session = req.getSession();
                 session.setAttribute("utilisateurSession", utilisateurSession);
 
-                resp.sendRedirect("transactions");
+                resp.sendRedirect("comptes-courants");
 
             } catch (NamingException e) {
                 throw new ServletException("Impossible de créer ou trouver l'EJB de session utilisateur.", e);
@@ -73,7 +73,6 @@ public class LoginServlet extends HttpServlet  {
 
     @Override
     public void init() throws ServletException {
-        // TODO Auto-generated method stub
         super.init();
     }
 	    

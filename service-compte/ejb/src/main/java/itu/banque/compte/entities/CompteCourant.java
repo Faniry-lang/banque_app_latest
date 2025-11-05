@@ -40,4 +40,5 @@ public class CompteCourant {
 
     public List<TransactionCourant> getTransactions() { return transactions; }
     public void setTransactions(List<TransactionCourant> transactions) { this.transactions = transactions; }
+
 }

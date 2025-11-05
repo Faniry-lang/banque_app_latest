@@ -15,11 +15,13 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 import itu.banque.api.dtos.CompteCourantDto;
+import itu.banque.api.dtos.ContexteTransactionDto;
 import itu.banque.api.dtos.Devise;
 import itu.banque.api.dtos.TransactionCourantDto;
 import itu.banque.api.dtos.TypeTransactionDto;
 import itu.banque.api.remote.ActionRoleServiceRemote;
 import itu.banque.api.remote.CompteCourantServiceRemote;
+import itu.banque.api.remote.ContexteTransactionServiceRemote;
 import itu.banque.api.remote.DeviseServiceRemote;
 import itu.banque.api.remote.TransactionCourantServiceRemote;
 import itu.banque.api.remote.TypeTransactionServiceRemote;
@@ -45,8 +47,12 @@ public class TransactionServlet extends HttpServlet {
     @EJB(lookup = "ejb:service-central/service-central-ejb/ActionRoleService!itu.banque.api.remote.ActionRoleServiceRemote")
     ActionRoleServiceRemote actionRoleService;
 
-    @EJB(lookup = "ejb:service-central/service-central-ejb/UtilisateurSession!itu.banque.api.remote.UtilisateurSessionRemote")
+    @EJB(lookup = "ejb:service-compte/service-compte-ejb/UtilisateurSession!itu.banque.api.remote.UtilisateurSessionRemote")
     UtilisateurSessionRemote utilisateurSession;
+
+    @EJB(lookup = "ejb:service-compte/service-compte-ejb/ContexteTransactionService!itu.banque.api.remote.ContexteTransactionServiceRemote")
+    ContexteTransactionServiceRemote contexteTransactionService;
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -131,6 +137,12 @@ public class TransactionServlet extends HttpServlet {
                 return;
             }
 
+            ContexteTransactionDto ctdto = this.contexteTransactionService.findByLibelle("STANDARD");
+            if(ctdto == null)
+            {
+                throw new ServletException("Aucun contexte de transaction nommé 'STANDARD' trouvé dans la base de donnée");
+            }
+
             // 2. Calcul du montant final
             BigDecimal taux = BigDecimal.valueOf(devise.getMontant());
             BigDecimal montantFinal = montantInitial.multiply(taux);
@@ -140,9 +152,11 @@ public class TransactionServlet extends HttpServlet {
             transaction.setIdCompte(Integer.parseInt(idCompteStr));
             transaction.setMontant(montantFinal); // On utilise le montant converti
             transaction.setIdTypeTransaction(Integer.parseInt(idTypeTransactionStr));
+            transaction.setDeviseRef(devise.getRef());
             transaction.setDateTransaction(dateTransaction);
+            transaction.setIdContexteTransaction(ctdto.getId());
 
-            transactionCourantService.create(transaction);
+            this.compteCourantService.effectuerTransaction(transaction);
 
             resp.sendRedirect("transactions");
 

@@ -1,5 +1,11 @@
 /home/faniry/Documents/GitHub/banque_app/service-central/web/src/main/java/itu/banque/central/filters/AuthenticationFilter.java
+/home/faniry/Documents/GitHub/banque_app/service-central/web/src/main/java/itu/banque/central/servlets/CompteCourantDetailsServlet.java
+/home/faniry/Documents/GitHub/banque_app/service-central/web/src/main/java/itu/banque/central/servlets/CompteCourantServlet.java
+/home/faniry/Documents/GitHub/banque_app/service-central/web/src/main/java/itu/banque/central/servlets/DeviseServlet.java
+/home/faniry/Documents/GitHub/banque_app/service-central/web/src/main/java/itu/banque/central/servlets/FraisBancaireServlet.java
 /home/faniry/Documents/GitHub/banque_app/service-central/web/src/main/java/itu/banque/central/servlets/HttpTransactionServlet.java
 /home/faniry/Documents/GitHub/banque_app/service-central/web/src/main/java/itu/banque/central/servlets/LoginServlet.java
 /home/faniry/Documents/GitHub/banque_app/service-central/web/src/main/java/itu/banque/central/servlets/LogoutServlet.java
+/home/faniry/Documents/GitHub/banque_app/service-central/web/src/main/java/itu/banque/central/servlets/PlafondServlet.java
+/home/faniry/Documents/GitHub/banque_app/service-central/web/src/main/java/itu/banque/central/servlets/TauxVariationServlet.java
 /home/faniry/Documents/GitHub/banque_app/service-central/web/src/main/java/itu/banque/central/servlets/TransactionServlet.java

@@ -1,6 +1,12 @@
 itu/banque/central/filters/AuthenticationFilter.class
-itu/banque/central/servlets/HttpTransactionServlet.class
+itu/banque/central/servlets/PlafondServlet.class
+itu/banque/central/servlets/CompteCourantServlet.class
 itu/banque/central/servlets/LoginServlet.class
-itu/banque/central/servlets/LogoutServlet.class
+itu/banque/central/servlets/DeviseServlet.class
+itu/banque/central/servlets/CompteCourantDetailsServlet.class
 itu/banque/central/servlets/HttpTransactionServlet$1.class
+itu/banque/central/servlets/TauxVariationServlet.class
 itu/banque/central/servlets/TransactionServlet.class
+itu/banque/central/servlets/FraisBancaireServlet.class
+itu/banque/central/servlets/HttpTransactionServlet.class
+itu/banque/central/servlets/LogoutServlet.class

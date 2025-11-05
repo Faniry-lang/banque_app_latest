@@ -77,6 +77,8 @@
     </style>
 </head>
 <body>
+    <%@ include file="aside.jsp" %>
+    <div class="main-content">
 
     <h1>Liste des Transactions</h1>
 
@@ -109,6 +111,28 @@
             </c:if>
         </tbody>
     </table>
+
+<c:if test="${not empty param.error}">
+    <div id="errorModal" class="modal" style="display: flex;">
+        <div class="modal-content">
+            <span class="close" onclick="document.getElementById('errorModal').style.display='none'">&times;</span>
+            <h2 style="color: red;">
+                <c:choose>
+                    <c:when test="${param.error eq 'deviseNotFound'}">
+                        La devise sélectionnée est introuvable pour cette date.
+                    </c:when>
+                    <c:when test="${param.error eq 'invalidInput'}">
+                        Les données saisies sont invalides. Veuillez vérifier vos entrées.
+                    </c:when>
+                    <c:otherwise>
+                        Une erreur inattendue est survenue.
+                    </c:otherwise>
+                </c:choose>
+            </h2>
+        </div>
+    </div>
+</c:if>
+
 
     <c:if test="${openModal}">
         <div id="addTransactionModal" class="modal" style="display:flex;">

@@ -13,10 +13,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -110,7 +106,7 @@ public class HttpTransactionServlet extends HttpServlet {
                                                 .collect(Collectors.toSet());
         req.setAttribute("devises", nomsDevisesUniques);
 
-        req.getRequestDispatcher("transactions.jsp").forward(req, resp);
+        req.getRequestDispatcher("http-transactions.jsp").forward(req, resp);
     }
 
     @Override

@@ -5,6 +5,11 @@ CREATE DATABASE compte_db;
 
 \c compte_db;
 
+-- CREATE TABLE type_compte (
+--     id SERIAL PRIMARY KEY,
+--     nom VARCHAR(20)
+-- );
+
 CREATE TABLE utilisateurs (
     id SERIAL PRIMARY KEY,
     nom VARCHAR(100) NOT NULL,
@@ -40,13 +45,96 @@ CREATE TABLE type_transaction (
     description TEXT
 );
 
+CREATE TABLE contexte_transaction (
+    id SERIAL PRIMARY KEY,
+    libelle VARCHAR(20) NOT NULL UNIQUE
+);
+
+INSERT INTO contexte_transaction (libelle) VALUES 
+('STANDARD'),
+('VIREMENT');
+
 CREATE TABLE transaction_courant (
     id SERIAL PRIMARY KEY,
     id_compte INT REFERENCES compte_courant(id),
     montant DECIMAL(15, 2) NOT NULL,
     type_transaction INT REFERENCES type_transaction(id),
+    id_contexte_transaction INT REFERENCES contexte_transaction(id),
+    devise_ref INT,
+    id_virement_source INT REFERENCES virement(id),
     date_transaction DATE DEFAULT CURRENT_DATE
 );
+
+CREATE TABLE frequence_plafond (
+    id SERIAL PRIMARY KEY,
+    libelle VARCHAR(20) NOT NULL UNIQUE
+);
+
+INSERT INTO frequence_plafond (libelle) VALUES 
+('MENSUEL'),
+('OPERATION'),
+('JOURNALIER');
+
+CREATE TABLE plafond (
+    id SERIAL PRIMARY KEY,
+    montant DECIMAL(15, 2) NOT NULL,
+    id_type_transaction INT REFERENCES type_transaction(id),
+    id_frequence_plafond INT REFERENCES frequence_plafond(id),
+    id_contexte_transaction INT REFERENCES contexte_transaction(id),
+    id_compte INT REFERENCES compte_courant(id),
+    date_debut DATE NOT NULL,
+    date_fin DATE
+);
+
+CREATE TABLE virement (
+    id SERIAL PRIMARY KEY,
+    id_compte INT REFERENCES compte_courant(id) NOT NULL,
+    id_compte_beneficiaire INT REFERENCES compte_courant(id) NOT NULL ,
+    montant DECIMAL(15, 2) NOT NULL,
+    date_virement DATE DEFAULT CURRENT_DATE NOT NULL,
+    devise_ref INT
+    -- id_transaction_entree INT REFERENCES transaction_courant(id) NOT NULL,
+    -- id_transaction_sortie INT REFERENCES transaction_courant(id) NOT NULL
+);
+
+CREATE TABLE libelle_statut_generique (
+    id SERIAL PRIMARY KEY,
+    table_reference VARCHAR(50) NOT NULL,
+    libelle VARCHAR(30) NOT NULL
+);
+
+CREATE TABLE statut_generique (
+    id SERIAL PRIMARY KEY,
+    table_reference VARCHAR(50) NOT NULL,
+    id_reference INT NOT NULL,
+    id_libelle INT REFERENCES libelle_statut_generique(id) NOT NULL,
+    id_utilisateur INT REFERENCES utilisateurs(id),
+    date_statut DATE DEFAULT CURRENT_DATE NOT NULL
+);
+
+CREATE TABLE frais_bancaire (
+    id SERIAL PRIMARY KEY,
+    montant_inf DECIMAL(15, 2),
+    montant_sup DECIMAL(15, 2),
+    frais_forfaitaire DECIMAL, 
+    frais_pourcentage  DECIMAL,
+    date_frais DATE DEFAULT CURRENT_DATE NOT NULL
+);
+
+CREATE TABLE etat_virement (
+    id SERIAL PRIMARY KEY,
+    id_virement INT REFERENCES virement(id),
+    etat INT,
+    date_etat TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+INSERT INTO libelle_statut_generique (table_reference, libelle) VALUES 
+('transaction_courant', 'VALIDE'),
+('transaction_courant', 'ANNULE'),
+('transaction_courant', 'EN_ATTENTE'),
+('virement', 'VALIDE'),
+('virement', 'ANNULE');
+('virement', 'EN_ATTENTE');
 
 -- 1. Insertion des Types de Transaction
 -- Nécessaire pour les références dans la table transaction_courant
@@ -73,7 +161,7 @@ INSERT INTO compte_courant (id_client, solde_initial) VALUES
 
 -- Compte pour Bob Martin (ID 2)
 INSERT INTO compte_courant (id_client, solde_initial) VALUES
-(4000.75);
+(2, 4000.75);
 
 ---
 

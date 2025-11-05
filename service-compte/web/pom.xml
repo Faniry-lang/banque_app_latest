@@ -14,6 +14,13 @@
 
     <dependencies>
 
+        <dependency>
+            <groupId>itu.banque.api</groupId>
+            <artifactId>api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+
         <!-- Import the CDI API, we use provided scope as the API is included in WildFly / JBoss EAP -->
         <dependency>
             <groupId>jakarta.enterprise</groupId>

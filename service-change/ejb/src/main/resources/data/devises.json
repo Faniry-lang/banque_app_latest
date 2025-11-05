@@ -1,0 +1,30 @@
+[
+  {
+    "ref": "1",
+    "nom": "Euro",
+    "dateDebut": "2025-01-01",
+    "dateFin": null,
+    "montant": 4500.0
+  },
+  {
+    "ref": "2",
+    "nom": "Ariary",
+    "dateDebut": "2025-01-01",
+    "dateFin": null,
+    "montant": 1.0
+  },
+  {
+    "ref": "3",
+    "nom": "Dollar",
+    "dateDebut": "2024-01-01",
+    "dateFin": "2024-12-31",
+    "montant": 3800.0
+  },
+  {
+    "ref": "4",
+    "nom": "Dollar",
+    "dateDebut": "2025-01-01",
+    "dateFin": null,
+    "montant": 4200.0
+  }
+]

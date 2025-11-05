@@ -20,6 +20,17 @@ public class TransactionCourant {
     @JoinColumn(name = "type_transaction", nullable = false)
     private TypeTransaction typeTransaction;
 
+    @ManyToOne
+    @JoinColumn(name = "id_contexte_transaction", nullable = false)
+    private ContexteTransaction contexteTransaction;
+
+    @ManyToOne
+    @JoinColumn(name = "id_virement_source")
+    private Virement virementSource;
+
+    @Column(name = "devise_ref")
+    private Integer deviseRef;
+
     @Column(nullable = false, precision = 15, scale = 2)
     private BigDecimal montant;
 
@@ -35,8 +46,35 @@ public class TransactionCourant {
     public TypeTransaction getTypeTransaction() { return typeTransaction; }
     public void setTypeTransaction(TypeTransaction typeTransaction) { this.typeTransaction = typeTransaction; }
 
+    public ContexteTransaction getContexteTransaction() {
+        return contexteTransaction;
+    }
+    public void setContexteTransaction(ContexteTransaction contexteTransaction) {
+        this.contexteTransaction = contexteTransaction;
+    }
+
+    public Virement getVirementSource() {
+        return virementSource;
+    }
+    public void setVirementSource(Virement virementSource) {
+        this.virementSource = virementSource;
+    }
+
+    public Integer getDeviseRef() {
+        return deviseRef;
+    }
+    public void setDeviseRef(Integer deviseRef) {
+        this.deviseRef = deviseRef;
+    }
+
     public BigDecimal getMontant() { return montant; }
-    public void setMontant(BigDecimal montant) { this.montant = montant; }
+    public void setMontant(BigDecimal montant) { 
+        if(montant == null || montant.compareTo(BigDecimal.ZERO) <= 0) 
+        {
+            throw new IllegalArgumentException("Montant du virement invalide");
+        }
+        this.montant = montant; 
+    }
 
     public LocalDate getDateTransaction() { return dateTransaction; }
     public void setDateTransaction(LocalDate dateTransaction) { this.dateTransaction = dateTransaction; }
