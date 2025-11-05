@@ -100,7 +100,7 @@
         <a href="/service-central-web/devises"><i class="ph ph-coins"></i>Gestion des Devises</a>
         <a href="/service-central-web/taux-variation"><i class="ph ph-chart-line"></i>Taux de Variation</a>
         <a href="/service-central-web/plafonds"><i class="ph ph-arrow-up"></i>Plafonds</a>
-        <a href="/service-central-web/frais-bancaire"><i class="ph ph-money"></i>Plafonds</a>
+        <a href="/service-central-web/frais-bancaire"><i class="ph ph-money"></i>Frais Bancaires</a>
     </div>
 
     <div class="sidebar-footer">

@@ -45,29 +45,6 @@ CREATE TABLE type_transaction (
     description TEXT
 );
 
-CREATE TABLE transaction_courant (
-    id SERIAL PRIMARY KEY,
-    id_compte INT REFERENCES compte_courant(id),
-    montant DECIMAL(15, 2) NOT NULL,
-    type_transaction INT REFERENCES type_transaction(id),
-    id_contexte_transaction INT REFERENCES contexte_transaction(id),
-    devise_ref INT,
-    id_virement_source INT REFERENCES virement(id),
-    date_transaction DATE DEFAULT CURRENT_DATE
-);
-
-
-CREATE TABLE plafond (
-    id SERIAL PRIMARY KEY,
-    montant DECIMAL(15, 2) NOT NULL,
-    id_type_transaction INT REFERENCES type_transaction(id),
-    id_frequence_plafond INT REFERENCES frequence_plafond(id),
-    id_contexte_transaction INT REFERENCES contexte_transaction(id),
-    id_compte INT REFERENCES compte_courant(id),
-    date_debut DATE NOT NULL,
-    date_fin DATE
-);
-
 CREATE TABLE virement (
     id SERIAL PRIMARY KEY,
     id_compte INT REFERENCES compte_courant(id) NOT NULL,
@@ -75,8 +52,26 @@ CREATE TABLE virement (
     montant DECIMAL(15, 2) NOT NULL,
     date_virement DATE DEFAULT CURRENT_DATE NOT NULL,
     devise_ref INT
-    -- id_transaction_entree INT REFERENCES transaction_courant(id) NOT NULL,
-    -- id_transaction_sortie INT REFERENCES transaction_courant(id) NOT NULL
+);
+
+CREATE TABLE transaction_courant (
+    id SERIAL PRIMARY KEY,
+    id_compte INT REFERENCES compte_courant(id),
+    montant DECIMAL(15, 2) NOT NULL,
+    type_transaction INT REFERENCES type_transaction(id),
+    devise_ref INT,
+    id_virement_source INT REFERENCES virement(id),
+    date_transaction DATE DEFAULT CURRENT_DATE
+);
+
+
+CREATE TABLE plafond_journalier (
+    id SERIAL PRIMARY KEY,
+    montant DECIMAL(15, 2) NOT NULL,
+    id_type_transaction INT REFERENCES type_transaction(id),
+    id_compte INT REFERENCES compte_courant(id),
+    date_debut DATE NOT NULL,
+    date_fin DATE
 );
 
 CREATE TABLE validation (
