@@ -43,7 +43,14 @@ public class CompteCourant {
     public List<TransactionCourant> getTransactions() { return transactions; }
     public void setTransactions(List<TransactionCourant> transactions) { this.transactions = transactions; }
 
-    public CompteCourantDto toDto(CompteCourantDto dto) {
-        Integer id = 
+    public CompteCourantDto toDto()
+    {
+        CompteCourantDto dto = new CompteCourantDto();
+        dto.setId(id);
+        dto.setIdClient(client.getId());
+        dto.setSoldeInitial(soldeInitial);
+        dto.setDateCreation(dateCreation);
+
+        return dto;
     }
 }
