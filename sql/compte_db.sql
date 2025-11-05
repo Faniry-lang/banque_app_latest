@@ -45,15 +45,6 @@ CREATE TABLE type_transaction (
     description TEXT
 );
 
-CREATE TABLE contexte_transaction (
-    id SERIAL PRIMARY KEY,
-    libelle VARCHAR(20) NOT NULL UNIQUE
-);
-
-INSERT INTO contexte_transaction (libelle) VALUES 
-('STANDARD'),
-('VIREMENT');
-
 CREATE TABLE transaction_courant (
     id SERIAL PRIMARY KEY,
     id_compte INT REFERENCES compte_courant(id),
@@ -65,15 +56,6 @@ CREATE TABLE transaction_courant (
     date_transaction DATE DEFAULT CURRENT_DATE
 );
 
-CREATE TABLE frequence_plafond (
-    id SERIAL PRIMARY KEY,
-    libelle VARCHAR(20) NOT NULL UNIQUE
-);
-
-INSERT INTO frequence_plafond (libelle) VALUES 
-('MENSUEL'),
-('OPERATION'),
-('JOURNALIER');
 
 CREATE TABLE plafond (
     id SERIAL PRIMARY KEY,
@@ -97,19 +79,20 @@ CREATE TABLE virement (
     -- id_transaction_sortie INT REFERENCES transaction_courant(id) NOT NULL
 );
 
-CREATE TABLE libelle_statut_generique (
+CREATE TABLE validation (
     id SERIAL PRIMARY KEY,
-    table_reference VARCHAR(50) NOT NULL,
-    libelle VARCHAR(30) NOT NULL
+    id_reference INT NOT NULL,
+    table_reference VARCHAR(60),
+    id_utilisateur INT REFERENCES utilisateurs(id),
+    date_validation TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
-CREATE TABLE statut_generique (
+CREATE TABLE etat (
     id SERIAL PRIMARY KEY,
-    table_reference VARCHAR(50) NOT NULL,
     id_reference INT NOT NULL,
-    id_libelle INT REFERENCES libelle_statut_generique(id) NOT NULL,
-    id_utilisateur INT REFERENCES utilisateurs(id),
-    date_statut DATE DEFAULT CURRENT_DATE NOT NULL
+    table_reference VARCHAR(60),
+    etat_num INT NOT NULL,
+    date_etat TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
 CREATE TABLE frais_bancaire (
@@ -120,21 +103,6 @@ CREATE TABLE frais_bancaire (
     frais_pourcentage  DECIMAL,
     date_frais DATE DEFAULT CURRENT_DATE NOT NULL
 );
-
-CREATE TABLE etat_virement (
-    id SERIAL PRIMARY KEY,
-    id_virement INT REFERENCES virement(id),
-    etat INT,
-    date_etat TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
-);
-
-INSERT INTO libelle_statut_generique (table_reference, libelle) VALUES 
-('transaction_courant', 'VALIDE'),
-('transaction_courant', 'ANNULE'),
-('transaction_courant', 'EN_ATTENTE'),
-('virement', 'VALIDE'),
-('virement', 'ANNULE');
-('virement', 'EN_ATTENTE');
 
 -- 1. Insertion des Types de Transaction
 -- Nécessaire pour les références dans la table transaction_courant

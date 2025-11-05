@@ -14,7 +14,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "plafond")
-public class Plafond {
+public class PlafondJournalier {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -27,16 +27,8 @@ public class Plafond {
     private TypeTransaction typeTransaction;
 
     @ManyToOne
-    @JoinColumn(name = "id_frequence_plafond", nullable = false)
-    private FrequencePlafond frequencePlafond;
-
-    @ManyToOne
     @JoinColumn(name = "id_compte", nullable = false)
     private CompteCourant compte;
-
-    @ManyToOne
-    @JoinColumn(name = "id_contexte_transaction", nullable = false)
-    private ContexteTransaction contexteTransaction;
 
     @Column(name = "date_debut", nullable = false)
     LocalDate dateDebut;
@@ -44,30 +36,14 @@ public class Plafond {
     @Column(name = "date_fin")
     LocalDate dateFin;
 
-    public Plafond(Integer id, BigDecimal montant, TypeTransaction typeTransaction, FrequencePlafond frequencePlafond,
-            ContexteTransaction contexteTransaction, LocalDate dateDebut, LocalDate dateFin) {
+    public PlafondJournalier(Integer id, BigDecimal montant, TypeTransaction typeTransaction, CompteCourant compte,
+            LocalDate dateDebut, LocalDate dateFin) {
         this.id = id;
         this.montant = montant;
         this.typeTransaction = typeTransaction;
-        this.frequencePlafond = frequencePlafond;
-        this.contexteTransaction = contexteTransaction;
-        this.dateDebut = dateDebut;
-        this.dateFin = dateFin;
-    }
-
-    public Plafond(Integer id, BigDecimal montant, TypeTransaction typeTransaction, FrequencePlafond frequencePlafond,
-            CompteCourant compte, ContexteTransaction contexteTransaction, LocalDate dateDebut, LocalDate dateFin) {
-        this.id = id;
-        this.montant = montant;
-        this.typeTransaction = typeTransaction;
-        this.frequencePlafond = frequencePlafond;
         this.compte = compte;
-        this.contexteTransaction = contexteTransaction;
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
-    }
-
-    public Plafond() {
     }
 
     public Integer getId() {
@@ -94,28 +70,12 @@ public class Plafond {
         this.typeTransaction = typeTransaction;
     }
 
-    public FrequencePlafond getFrequencePlafond() {
-        return frequencePlafond;
-    }
-
-    public void setFrequencePlafond(FrequencePlafond frequencePlafond) {
-        this.frequencePlafond = frequencePlafond;
-    }
-
     public CompteCourant getCompte() {
         return compte;
     }
 
     public void setCompte(CompteCourant compte) {
         this.compte = compte;
-    }
-
-    public ContexteTransaction getContexteTransaction() {
-        return contexteTransaction;
-    }
-
-    public void setContexteTransaction(ContexteTransaction contexteTransaction) {
-        this.contexteTransaction = contexteTransaction;
     }
 
     public LocalDate getDateDebut() {
@@ -133,5 +93,4 @@ public class Plafond {
     public void setDateFin(LocalDate dateFin) {
         this.dateFin = dateFin;
     }
-
 }

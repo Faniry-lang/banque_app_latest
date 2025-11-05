@@ -21,10 +21,6 @@ public class TransactionCourant {
     private TypeTransaction typeTransaction;
 
     @ManyToOne
-    @JoinColumn(name = "id_contexte_transaction", nullable = false)
-    private ContexteTransaction contexteTransaction;
-
-    @ManyToOne
     @JoinColumn(name = "id_virement_source")
     private Virement virementSource;
 
@@ -37,45 +33,91 @@ public class TransactionCourant {
     @Column(name = "date_transaction")
     private LocalDate dateTransaction = LocalDate.now();
 
-    public Integer getId() { return id; }
-    public void setId(Integer id) { this.id = id; }
-
-    public CompteCourant getCompte() { return compte; }
-    public void setCompte(CompteCourant compte) { this.compte = compte; }
-
-    public TypeTransaction getTypeTransaction() { return typeTransaction; }
-    public void setTypeTransaction(TypeTransaction typeTransaction) { this.typeTransaction = typeTransaction; }
-
-    public ContexteTransaction getContexteTransaction() {
-        return contexteTransaction;
+    public TransactionCourant(Integer id, CompteCourant compte, TypeTransaction typeTransaction,
+            Virement virementSource, Integer deviseRef, BigDecimal montant, LocalDate dateTransaction) {
+        this.setId(id);
+        this.setCompte(compte);
+        this.setTypeTransaction(typeTransaction);
+        this.setVirementSource(virementSource);
+        this.setDeviseRef(deviseRef);
+        this.setMontant(montant);
+        this.setDateTransaction(dateTransaction);
     }
-    public void setContexteTransaction(ContexteTransaction contexteTransaction) {
-        this.contexteTransaction = contexteTransaction;
+
+    public Integer getId() {
+        return id;
+    }
+
+    private void setId(Integer id) {
+        this.id = id;
+    }
+
+    public CompteCourant getCompte() {
+        return compte;
+    }
+
+    private void setCompte(CompteCourant compte) {
+        if(compte == null)
+        {
+            throw new IllegalArgumentException("Le compte émetteur du virement ne peut pas être nul");
+        }
+        this.compte = compte;
+    }
+
+    public TypeTransaction getTypeTransaction() {
+        return typeTransaction;
+    }
+
+    private void setTypeTransaction(TypeTransaction typeTransaction) {
+        if(typeTransaction == null)
+        {
+            throw new IllegalArgumentException("Le type de transaction de la transaction ne peut pas être nul");
+        }
+        this.typeTransaction = typeTransaction;
     }
 
     public Virement getVirementSource() {
         return virementSource;
     }
-    public void setVirementSource(Virement virementSource) {
+
+    private void setVirementSource(Virement virementSource) {
         this.virementSource = virementSource;
     }
 
     public Integer getDeviseRef() {
         return deviseRef;
     }
-    public void setDeviseRef(Integer deviseRef) {
+
+    private void setDeviseRef(Integer deviseRef) {
         this.deviseRef = deviseRef;
     }
 
-    public BigDecimal getMontant() { return montant; }
-    public void setMontant(BigDecimal montant) { 
-        if(montant == null || montant.compareTo(BigDecimal.ZERO) <= 0) 
-        {
-            throw new IllegalArgumentException("Montant du virement invalide");
-        }
-        this.montant = montant; 
+    public BigDecimal getMontant() {
+        return montant;
     }
 
-    public LocalDate getDateTransaction() { return dateTransaction; }
-    public void setDateTransaction(LocalDate dateTransaction) { this.dateTransaction = dateTransaction; }
+    private void setMontant(BigDecimal montant) {
+        if(montant == null)
+        {
+            throw new IllegalArgumentException("Le montant ne peut pas être nul");
+        }
+        if(montant.compareTo(BigDecimal.ZERO) <= 0)
+        {
+            throw new IllegalArgumentException("Le montant de la transaction ne peut pas être inférieur ou égal à 0");
+        }
+        this.montant = montant;
+    }
+
+    public LocalDate getDateTransaction() {
+        return dateTransaction;
+    }
+
+    private void setDateTransaction(LocalDate dateTransaction) {
+        if(dateTransaction.isAfter(LocalDate.now()))
+        {
+            throw new IllegalArgumentException("La date du virement ne peut pas être inférieur à la date actuelle");
+        }
+        this.dateTransaction = dateTransaction;
+    }
+
 }

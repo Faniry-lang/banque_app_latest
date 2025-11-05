@@ -11,20 +11,14 @@ public class VirementDto implements Serializable {
     BigDecimal montant;
     Integer deviseRef;
     LocalDate dateVirement;
-    Integer idTransactionEntree;
-    Integer idTransactionSortie;
-    
-
     public VirementDto(Integer id, Integer idCompte, Integer idCompteBeneficiaire, BigDecimal montant,
-            Integer deviseRef, LocalDate dateVirement, Integer idTransactionEntree, Integer idTransactionSortie) {
+            Integer deviseRef, LocalDate dateVirement) {
         this.id = id;
         this.idCompte = idCompte;
         this.idCompteBeneficiaire = idCompteBeneficiaire;
         this.montant = montant;
         this.deviseRef = deviseRef;
         this.dateVirement = dateVirement;
-        this.idTransactionEntree = idTransactionEntree;
-        this.idTransactionSortie = idTransactionSortie;
     }
     public VirementDto() {
     }
@@ -52,28 +46,17 @@ public class VirementDto implements Serializable {
     public void setMontant(BigDecimal montant) {
         this.montant = montant;
     }
-    public LocalDate getDateVirement() {
-        return dateVirement;
-    }
-    public void setDateVirement(LocalDate dateVirement) {
-        this.dateVirement = dateVirement;
-    }
-    public Integer getIdTransactionEntree() {
-        return idTransactionEntree;
-    }
-    public void setIdTransactionEntree(Integer idTransactionEntree) {
-        this.idTransactionEntree = idTransactionEntree;
-    }
-    public Integer getIdTransactionSortie() {
-        return idTransactionSortie;
-    }
-    public void setIdTransactionSortie(Integer idTransactionSortie) {
-        this.idTransactionSortie = idTransactionSortie;
-    }
     public Integer getDeviseRef() {
         return deviseRef;
     }
     public void setDeviseRef(Integer deviseRef) {
         this.deviseRef = deviseRef;
     }
+    public LocalDate getDateVirement() {
+        return dateVirement;
+    }
+    public void setDateVirement(LocalDate dateVirement) {
+        this.dateVirement = dateVirement;
+    }
+    
 }

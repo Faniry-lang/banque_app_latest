@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+import itu.banque.api.dtos.CompteCourantDto;
+
 @Entity
 @Table(name = "compte_courant")
 public class CompteCourant {
@@ -41,4 +43,7 @@ public class CompteCourant {
     public List<TransactionCourant> getTransactions() { return transactions; }
     public void setTransactions(List<TransactionCourant> transactions) { this.transactions = transactions; }
 
+    public CompteCourantDto toDto(CompteCourantDto dto) {
+        Integer id = 
+    }
 }

@@ -35,48 +35,17 @@ public class Virement {
     @Column(name = "date_virement", nullable = false)
     private LocalDate dateVirement = LocalDate.now();
 
-    @ManyToOne
-    @JoinColumn(name = "id_transaction_entree", nullable = false)
-    private TransactionCourant transactionEntree;
-
-    @ManyToOne
-    @JoinColumn(name = "id_transaction_sortie", nullable = false)
-    private TransactionCourant transactionSortie;
-
-    protected Virement() {}
-
-    public Virement(Integer id, CompteCourant compte, CompteCourant compteBeneficiaire, BigDecimal montant, Integer deviseRef,
-            LocalDate dateVirement, TransactionCourant transactionEntree, TransactionCourant transactionSortie) throws IllegalArgumentException {
+    public Virement(Integer id, CompteCourant compte, CompteCourant compteBeneficiaire, BigDecimal montant,
+            Integer deviseRef, LocalDate dateVirement) {
         this.setId(id);
         this.setCompte(compte);
         this.setCompteBeneficiaire(compteBeneficiaire);
         this.setMontant(montant);
         this.setDeviseRef(deviseRef);
         this.setDateVirement(dateVirement);
-        this.setTransactionEntree(transactionEntree);
-        this.setTransactionSortie(transactionSortie);
-
-        if(!this.transactionEntree.getCompte().getId().equals(this.getCompteBeneficiaire().getId()))
-        {
-            throw new IllegalArgumentException("Le compte bénéficiaire enregistré dans la transaction interne est différent de celui du virement");
-        }
-
-        if(!this.transactionSortie.getCompte().getId().equals(this.getCompte().getId()))
-        {
-            throw new IllegalArgumentException("Le compte émetteur enregistré dans la transaction interne est différent de celui du virement");
-        }
-
-        if(!this.transactionEntree.getMontant().equals(this.montant) || !this.transactionSortie.getMontant().equals(montant))
-        {
-            throw new IllegalArgumentException("Les montants des opérations internes sont différentes de celle enregistrée dans le virement");
-        }
-
-        if(this.dateVirement.isAfter(LocalDate.now()))
-        {
-            throw new IllegalArgumentException("La date de virement ne doit pas être supérieure à la date actuelle");
-        }
-
     }
+
+    protected Virement() {}
 
     public Integer getId() {
         return id;
@@ -90,10 +59,10 @@ public class Virement {
         return compte;
     }
 
-    private void setCompte(CompteCourant compte) throws IllegalArgumentException {
-        if(compte == null) 
+    private void setCompte(CompteCourant compte) {
+        if(compte == null)
         {
-            throw new IllegalArgumentException("Le compte émetteur ne peut pas être null");
+            throw new IllegalArgumentException("Le compte émetteur du virement ne peut pas être nul");
         }
         this.compte = compte;
     }
@@ -102,10 +71,10 @@ public class Virement {
         return compteBeneficiaire;
     }
 
-    private void setCompteBeneficiaire(CompteCourant compteBeneficiaire) throws IllegalArgumentException {
-        if(compteBeneficiaire == null) 
+    private void setCompteBeneficiaire(CompteCourant compteBeneficiaire) {
+        if(compteBeneficiaire == null)
         {
-            throw new IllegalArgumentException("Le compte bénéficiaire ne peut pas être null");
+            throw new IllegalArgumentException("Le compte bénéficiaire du virement ne peut pas être nul");
         }
         this.compteBeneficiaire = compteBeneficiaire;
     }
@@ -114,12 +83,24 @@ public class Virement {
         return montant;
     }
 
-    private void setMontant(BigDecimal montant) throws IllegalArgumentException {
-        if(montant == null || montant.compareTo(BigDecimal.ZERO) <= 0) 
+    private void setMontant(BigDecimal montant) {
+        if(montant == null)
         {
-            throw new IllegalArgumentException("Montant du virement invalide");
+            throw new IllegalArgumentException("Le montant ne peut pas être nul");
+        }
+        if(montant.compareTo(BigDecimal.ZERO) <= 0)
+        {
+            throw new IllegalArgumentException("Le montant du virement ne peut pas être inférieur ou égal à 0");
         }
         this.montant = montant;
+    }
+
+    public Integer getDeviseRef() {
+        return deviseRef;
+    }
+
+    private void setDeviseRef(Integer deviseRef) {
+        this.deviseRef = deviseRef;
     }
 
     public LocalDate getDateVirement() {
@@ -127,30 +108,10 @@ public class Virement {
     }
 
     private void setDateVirement(LocalDate dateVirement) {
+        if(dateVirement.isAfter(LocalDate.now()))
+        {
+            throw new IllegalArgumentException("La date du virement ne peut pas être inférieur à la date actuelle");
+        }
         this.dateVirement = dateVirement;
-    }
-
-    public TransactionCourant getTransactionEntree() {
-        return transactionEntree;
-    }
-
-    private void setTransactionEntree(TransactionCourant transactionEntree) {
-        this.transactionEntree = transactionEntree;
-    }
-
-    public TransactionCourant getTransactionSortie() {
-        return transactionSortie;
-    }
-
-    private void setTransactionSortie(TransactionCourant transactionSortie) {
-        this.transactionSortie = transactionSortie;
-    }
-
-    public Integer getDeviseRef() {
-        return deviseRef;
-    }
-
-    public void setDeviseRef(Integer deviseRef) {
-        this.deviseRef = deviseRef;
     }
 }
