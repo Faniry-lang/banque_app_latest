@@ -1,5 +1,20 @@
 package itu.banque.central.servlets;
 
+import itu.banque.api.dtos.CompteCourantDto;
+import itu.banque.api.dtos.Devise;
+import itu.banque.api.dtos.TransactionCourantDto;
+import itu.banque.api.dtos.UtilisateurDto;
+import itu.banque.api.dtos.VirementDto;
+import itu.banque.api.remote.CompteCourantServiceRemote;
+import itu.banque.api.remote.DeviseServiceRemote;
+import itu.banque.api.remote.UtilisateurSessionRemote;
+import jakarta.ejb.EJB;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
@@ -13,168 +28,110 @@ import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import itu.banque.api.dtos.CompteCourantDto;
-import itu.banque.api.dtos.ContexteTransactionDto;
-import itu.banque.api.dtos.CreerVirementDto;
-import itu.banque.api.dtos.Devise;
-import itu.banque.api.dtos.TransactionCourantDto;
-import itu.banque.api.dtos.TypeTransactionDto;
-import itu.banque.api.dtos.UtilisateurDto;
-import itu.banque.api.dtos.VirementDto;
-import itu.banque.api.remote.CompteCourantServiceRemote;
-import itu.banque.api.remote.ContexteTransactionServiceRemote;
-import itu.banque.api.remote.DeviseServiceRemote;
-import itu.banque.api.remote.TransactionCourantServiceRemote;
-import itu.banque.api.remote.TypeTransactionServiceRemote;
-import itu.banque.api.remote.UtilisateurSessionRemote;
-import itu.banque.api.remote.VirementServiceRemote;
-import itu.banque.api.ui.TransactionCourantViewModel;
-import jakarta.ejb.EJB;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
+@WebServlet("/compte-courant-details")
 public class CompteCourantDetailsServlet extends HttpServlet {
 
     @EJB(lookup = "ejb:service-compte/service-compte-ejb/CompteCourantService!itu.banque.api.remote.CompteCourantServiceRemote")
     private CompteCourantServiceRemote compteCourantService;
 
-    @EJB(lookup = "ejb:service-compte/service-compte-ejb/TransactionCourantService!itu.banque.api.remote.TransactionCourantServiceRemote")
-    private TransactionCourantServiceRemote transactionCourantService;
-
-    @EJB(lookup = "ejb:service-compte/service-compte-ejb/ContexteTransactionService!itu.banque.api.remote.ContexteTransactionServiceRemote")
-    private ContexteTransactionServiceRemote contexteTransactionService;
-
-    @EJB(lookup = "ejb:service-compte/service-compte-ejb/TypeTransactionService!itu.banque.api.remote.TypeTransactionServiceRemote")
-    private TypeTransactionServiceRemote typeTransactionService;
-
-    @EJB(lookup = "ejb:service-compte/service-compte-ejb/VirementService!itu.banque.api.remote.VirementServiceRemote")
-    private VirementServiceRemote virementService;
-
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String idParam = req.getParameter("id");
-        if (idParam == null || idParam.trim().isEmpty()) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID du compte manquant.");
-            return;
-        }
-
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            Integer id = Integer.parseInt(idParam);
-            
-            CompteCourantDto compte = compteCourantService.findById(id);
-            List<TransactionCourantViewModel> transactions = transactionCourantService.getTransactionViewModelsByCompteId(id);
-            BigDecimal solde = transactionCourantService.getSolde(LocalDate.now(), id);
-
-            List<CompteCourantDto> tousLesComptes = compteCourantService.getAll();
-            List<TypeTransactionDto> typesTransactions = typeTransactionService.getAll();
-            List<Devise> devises = getDeviseService().getAll();
-
-            req.setAttribute("compte", compte);
-            req.setAttribute("transactions", transactions);
-            req.setAttribute("solde", solde);
-            req.setAttribute("comptes", tousLesComptes);
-            req.setAttribute("typesTransactions", typesTransactions);
-            req.setAttribute("devises", devises.stream().map(Devise::getNom).collect(Collectors.toSet()));
-
-            req.getRequestDispatcher("/compte-courant-details.jsp").forward(req, resp);
-
-        } catch (NumberFormatException e) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "ID du compte invalide.");
-        } catch (Exception e) {
-            throw new ServletException("Erreur lors de la récupération des détails du compte.", e);
-        }
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String action = req.getParameter("action");
-        String idCompteStr = req.getParameter("idCompte");
-
-        if (action == null || idCompteStr == null) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Action ou ID de compte manquant.");
-            return;
-        }
-
-        String redirectUrl = "compte-courant-details?id=" + idCompteStr;
-
-        try {
-            switch (action) {
-                case "insert_transaction":
-                    effectuerTransaction(req);
-                    redirectUrl += "&success=transaction_ok";
-                    break;
-                case "insert_virement":
-                    virer(req);
-                    redirectUrl += "&success=virement_ok";
-                    break;
-                case "change_status":
-                    changerStatut(req);
-                    redirectUrl += "&success=change_status_ok";
-                    break;
-                default:
-                    redirectUrl += "&error=action_inconnue";
-                    break;
+            String idParam = request.getParameter("id");
+            if (idParam == null) {
+                response.sendRedirect("comptes-courants");
+                return;
             }
+            int compteId = Integer.parseInt(idParam);
+
+            CompteCourantDto compte = compteCourantService.findById(compteId);
+            request.setAttribute("compte", compte);
+            request.setAttribute("solde", compteCourantService.getSolde(LocalDate.now(), compteId));
+            request.setAttribute("transactions", compteCourantService.getAllTransactions(compteId));
+            request.setAttribute("virements", compteCourantService.getVirementsForCompte(compteId));
+
+            request.setAttribute("typesTransactions", compteCourantService.getAllTypeTransactions());
+            request.setAttribute("comptes", compteCourantService.getAll());
+
+            DeviseServiceRemote deviseService = getDeviseService();
+            List<String> devisesNoms = deviseService.getAll().stream()
+                                                    .map(Devise::getNom)
+                                                    .distinct()
+                                                    .collect(Collectors.toList());
+            request.setAttribute("devisesNoms", devisesNoms);
+
+            request.getRequestDispatcher("compte-courant-details.jsp").forward(request, response);
+
         } catch (Exception e) {
             e.printStackTrace();
-            String errorMessage = URLEncoder.encode(e.getMessage(), StandardCharsets.UTF_8.name());
-            redirectUrl += "&error=" + errorMessage;
+            response.sendRedirect("comptes-courants?error=" + URLEncoder.encode("Erreur lors de la récupération des détails du compte.", StandardCharsets.UTF_8));
         }
-        
-        resp.sendRedirect(redirectUrl);
     }
 
-    private void virer(HttpServletRequest req) throws Exception {
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String action = request.getParameter("action");
+        String idCompte = request.getParameter("idCompte");
+        String redirectUrl = "compte-courant-details?id=" + idCompte;
 
-        UtilisateurSessionRemote session = (UtilisateurSessionRemote) req.getSession().getAttribute("utilisateurSession");
-        UtilisateurDto utilisateur = session.getUtilisateur();
-        BigDecimal montant = new BigDecimal(req.getParameter("montant"));
-        Integer idCompte = Integer.parseInt(req.getParameter("idCompte"));
-        Integer idCompteBeneficiaire = Integer.parseInt(req.getParameter("idCompteBeneficiaire"));
-        LocalDate dateVirement = LocalDate.parse(req.getParameter("dateVirement"));
-        String nomDevise = req.getParameter("deviseRef");
+        try {
+            DeviseServiceRemote deviseService = getDeviseService();
+            UtilisateurSessionRemote session = (UtilisateurSessionRemote) request.getSession().getAttribute("utilisateurSession");
+            if(session == null)
+            {
+                response.sendRedirect("login");
+                return; 
+            }
+            UtilisateurDto utilisateurDto = session.getUtilisateur();
+            Integer utilisateurId = utilisateurDto != null ? utilisateurDto.getId() : null;
 
-        DeviseServiceRemote deviseService = getDeviseService();
-        Devise devise = deviseService.getByNomEtDate(nomDevise, dateVirement);
-        if (devise == null) {
-            throw new ServletException("Devise non trouvée pour la date spécifiée.");
+            switch (action) {
+                case "insert_transaction":
+                    TransactionCourantDto txDto = new TransactionCourantDto();
+                    LocalDate dateTx = LocalDate.parse(request.getParameter("dateTransaction"));
+                    String nomDeviseTx = request.getParameter("nomDevise");
+                    Devise deviseTx = deviseService.getByNomEtDate(nomDeviseTx, dateTx);
+                    if (deviseTx == null) throw new Exception("La devise '" + nomDeviseTx + "' n'est pas valide pour la date choisie.");
+
+                    txDto.setIdCompte(Integer.parseInt(idCompte));
+                    txDto.setMontant(new BigDecimal(request.getParameter("montant")));
+                    txDto.setIdTypeTransaction(Integer.parseInt(request.getParameter("idTypeTransaction")));
+                    txDto.setDateTransaction(dateTx);
+                    txDto.setDeviseRef(deviseTx.getRef());
+                    compteCourantService.effectuerTransaction(txDto);
+                    break;
+
+                case "insert_virement":
+                    VirementDto virementDto = new VirementDto();
+                    LocalDate dateVir = LocalDate.parse(request.getParameter("dateVirement"));
+                    String nomDeviseVir = request.getParameter("nomDevise");
+                    Devise deviseVir = deviseService.getByNomEtDate(nomDeviseVir, dateVir);
+                    if (deviseVir == null) throw new Exception("La devise '" + nomDeviseVir + "' n'est pas valide pour la date choisie.");
+
+                    virementDto.setIdCompte(Integer.parseInt(idCompte));
+                    virementDto.setIdCompteBeneficiaire(Integer.parseInt(request.getParameter("idCompteBeneficiaire")));
+                    virementDto.setMontant(new BigDecimal(request.getParameter("montant")));
+                    virementDto.setDateVirement(dateVir);
+                    virementDto.setDeviseRef(deviseVir.getRef());
+                    compteCourantService.virer(virementDto);
+                    break;
+
+                case "valider_virement":
+                    Integer virementId = Integer.parseInt(request.getParameter("virementId"));
+                    compteCourantService.validerVirement(virementId, utilisateurId);
+                    break;
+
+                case "valider_transaction":
+                    Integer transactionId = Integer.parseInt(request.getParameter("transactionId"));
+                    compteCourantService.validerTransaction(transactionId, utilisateurId);
+                    break;
+            }
+            response.sendRedirect(redirectUrl);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.sendRedirect(redirectUrl + "&error=" + URLEncoder.encode(e.getMessage(), StandardCharsets.UTF_8));
         }
-
-        CreerVirementDto dto = new CreerVirementDto(montant, idCompte, idCompteBeneficiaire, dateVirement, utilisateur.getId(), devise.getRef());
-        compteCourantService.virer(dto);
-    }
-
-    private void effectuerTransaction(HttpServletRequest req) throws Exception {
-        Integer idCompte = Integer.parseInt(req.getParameter("idCompte"));
-        BigDecimal montantInitial = new BigDecimal(req.getParameter("montant"));
-        Integer idTypeTransaction = Integer.parseInt(req.getParameter("idTypeTransaction"));
-        String nomDevise = req.getParameter("nomDevise");
-        LocalDate dateTransaction = LocalDate.parse(req.getParameter("dateTransaction"));
-
-        Devise devise = getDeviseService().getByNomEtDate(nomDevise, dateTransaction);
-        if (devise == null) {
-            throw new ServletException("Devise non trouvée pour la date spécifiée.");
-        }
-
-        ContexteTransactionDto ctdto = contexteTransactionService.findByLibelle("STANDARD");
-        if (ctdto == null) {
-            throw new ServletException("Contexte de transaction 'STANDARD' non trouvé.");
-        }
-
-        BigDecimal taux = BigDecimal.valueOf(devise.getMontant());
-        BigDecimal montantFinal = montantInitial.multiply(taux);
-
-        TransactionCourantDto transaction = new TransactionCourantDto();
-        transaction.setIdCompte(idCompte);
-        transaction.setMontant(montantFinal);
-        transaction.setIdTypeTransaction(idTypeTransaction);
-        transaction.setDeviseRef(devise.getRef());
-        transaction.setDateTransaction(dateTransaction);
-        transaction.setIdContexteTransaction(ctdto.getId());
-
-        transactionCourantService.effectuerTransaction(transaction);
     }
 
     private DeviseServiceRemote getDeviseService() throws NamingException {
@@ -183,39 +140,8 @@ public class CompteCourantDetailsServlet extends HttpServlet {
         jndiProperties.put(Context.PROVIDER_URL, "http-remoting://localhost:8082");
         jndiProperties.put(Context.SECURITY_PRINCIPAL, "applicationAdmin");
         jndiProperties.put(Context.SECURITY_CREDENTIALS, "admin123");
-        
         final Context context = new InitialContext(jndiProperties);
         String lookupString = "ejb:service-change/service-change-ejb/DeviseService!itu.banque.api.remote.DeviseServiceRemote";
-        
         return (DeviseServiceRemote) context.lookup(lookupString);
-    }
-
-    private void changerStatut(HttpServletRequest req) throws Exception {
-        Integer idTransaction = Integer.parseInt(req.getParameter("idTransaction"));
-        String statutActuel = req.getParameter("statutActuel");
-        String contexte = req.getParameter("contexteTransaction");
-        UtilisateurSessionRemote session = (UtilisateurSessionRemote) req.getSession().getAttribute("utilisateurSession");
-        UtilisateurDto utilisateur = session.getUtilisateur();
-
-        if ("VIREMENT".equalsIgnoreCase(contexte)) {
-            VirementDto virement = virementService.findByTransactionId(idTransaction);
-            if (virement == null) {
-                throw new ServletException("Impossible de trouver le virement lié à cette transaction.");
-            }
-
-            if ("VALIDE".equalsIgnoreCase(statutActuel)) {
-                virementService.annuler(virement, utilisateur.getId());
-            } else if ("ANNULE".equalsIgnoreCase(statutActuel)) {
-                virementService.valider(virement, utilisateur.getId());
-            }
-        } else {
-            TransactionCourantDto tx = this.transactionCourantService.findById(idTransaction);
-            
-            if ("VALIDE".equalsIgnoreCase(statutActuel)) {
-                transactionCourantService.annuler(tx, utilisateur.getId());
-            } else if ("ANNULE".equalsIgnoreCase(statutActuel)) {
-                transactionCourantService.valider(tx, utilisateur.getId());
-            }
-        }
     }
 }

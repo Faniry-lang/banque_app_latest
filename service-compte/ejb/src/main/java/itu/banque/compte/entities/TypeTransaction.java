@@ -24,4 +24,12 @@ public class TypeTransaction {
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
+
+    public itu.banque.api.dtos.TypeTransactionDto toDto() {
+        itu.banque.api.dtos.TypeTransactionDto dto = new itu.banque.api.dtos.TypeTransactionDto();
+        dto.setId(this.getId());
+        dto.setNom(this.getNom());
+        dto.setDescription(this.getDescription());
+        return dto;
+    }
 }

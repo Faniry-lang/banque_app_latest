@@ -154,7 +154,6 @@ public class TransactionServlet extends HttpServlet {
             transaction.setIdTypeTransaction(Integer.parseInt(idTypeTransactionStr));
             transaction.setDeviseRef(devise.getRef());
             transaction.setDateTransaction(dateTransaction);
-            transaction.setIdContexteTransaction(ctdto.getId());
 
             this.compteCourantService.effectuerTransaction(transaction);
 

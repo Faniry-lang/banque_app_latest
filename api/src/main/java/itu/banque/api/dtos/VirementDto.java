@@ -11,14 +11,16 @@ public class VirementDto implements Serializable {
     BigDecimal montant;
     Integer deviseRef;
     LocalDate dateVirement;
+    BigDecimal totalFrais;
     public VirementDto(Integer id, Integer idCompte, Integer idCompteBeneficiaire, BigDecimal montant,
-            Integer deviseRef, LocalDate dateVirement) {
+            Integer deviseRef, LocalDate dateVirement, BigDecimal totalFrais) {
         this.id = id;
         this.idCompte = idCompte;
         this.idCompteBeneficiaire = idCompteBeneficiaire;
         this.montant = montant;
         this.deviseRef = deviseRef;
         this.dateVirement = dateVirement;
+        this.totalFrais = totalFrais;
     }
     public VirementDto() {
     }
@@ -57,6 +59,12 @@ public class VirementDto implements Serializable {
     }
     public void setDateVirement(LocalDate dateVirement) {
         this.dateVirement = dateVirement;
+    }
+    public BigDecimal getTotalFrais() {
+        return totalFrais;
+    }
+    public void setTotalFrais(BigDecimal totalFrais) {
+        this.totalFrais = totalFrais;
     }
     
 }

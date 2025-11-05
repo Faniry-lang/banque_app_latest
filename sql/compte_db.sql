@@ -51,6 +51,7 @@ CREATE TABLE virement (
     id_compte_beneficiaire INT REFERENCES compte_courant(id) NOT NULL ,
     montant DECIMAL(15, 2) NOT NULL,
     date_virement DATE DEFAULT CURRENT_DATE NOT NULL,
+    total_frais DECIMAL,
     devise_ref INT
 );
 
@@ -68,7 +69,6 @@ CREATE TABLE transaction_courant (
 CREATE TABLE plafond_journalier (
     id SERIAL PRIMARY KEY,
     montant DECIMAL(15, 2) NOT NULL,
-    id_type_transaction INT REFERENCES type_transaction(id),
     id_compte INT REFERENCES compte_courant(id),
     date_debut DATE NOT NULL,
     date_fin DATE
@@ -139,3 +139,14 @@ INSERT INTO transaction_courant (id_compte, montant, type_transaction) VALUES
 -- Transaction sur le compte de Bob (ID 2)
 INSERT INTO transaction_courant (id_compte, montant, type_transaction) VALUES
 (2, 50.00, 1); -- Débit de 50.00
+
+-- 5. Insertion des Frais Bancaires
+INSERT INTO frais_bancaire (montant_inf, montant_sup, frais_forfaitaire, frais_pourcentage, date_frais) VALUES
+(0.01, 500.00, 5.00, 0, '2025-01-01'),
+(500.01, 5000.00, 0, 1.0, '2025-01-01'),
+(5000.01, 100000.00, 10.00, 0.5, '2025-01-01');
+
+-- 6. Insertion des Plafonds Journaliers
+-- Plafond de 2000 pour le compte d'Alice (ID 1) à partir du 1er Novembre 2025
+INSERT INTO plafond_journalier (montant, id_compte, date_debut, date_fin) VALUES
+(2000.00, 1, '2025-11-01', NULL);

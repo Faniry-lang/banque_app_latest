@@ -3,12 +3,14 @@ package itu.banque.api.dtos;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 public class CompteCourantDto implements Serializable {
     Integer id;
     Integer idClient;
     BigDecimal soldeInitial;
     LocalDate dateCreation;
+    List<TransactionCourantDto> transactions;
     public Integer getId() {
         return id;
     }
@@ -32,5 +34,11 @@ public class CompteCourantDto implements Serializable {
     }
     public void setDateCreation(LocalDate dateCreation) {
         this.dateCreation = dateCreation;
+    }
+    public List<TransactionCourantDto> getTransactions() {
+        return transactions;
+    }
+    public void setTransactions(List<TransactionCourantDto> transactions) {
+        this.transactions = transactions;
     }
 }

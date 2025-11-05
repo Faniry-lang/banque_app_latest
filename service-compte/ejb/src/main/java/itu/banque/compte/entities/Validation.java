@@ -24,6 +24,9 @@ public class Validation {
     @Column(name = "date_validation", nullable = false)
     private LocalDateTime dateValidation = LocalDateTime.now();
 
+    public Validation() {
+    }
+
     public Validation(Integer id, Integer idReference, String tableReference, Utilisateur utilisateur,
             LocalDateTime dateValidation) {
         this.setId(id);

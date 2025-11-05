@@ -14,6 +14,7 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import jakarta.transaction.Transactional;
+import jakarta.persistence.criteria.Path;
 
 @ApplicationScoped
 public class PersistenceObjectManager {
@@ -41,64 +42,83 @@ public class PersistenceObjectManager {
         return em.find(clazz, id);
     }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+@SuppressWarnings({ "rawtypes", "unchecked" })
     public <T> List<T> findByCriteria(Class<T> clazz, List<Criterion> criteria) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(clazz);
         Root<T> root = cq.from(clazz);
 
-        List<Predicate> predicates = new ArrayList<>();
+        List<Predicate> andPredicates = new ArrayList<>();
+        List<Predicate> orPredicates = new ArrayList<>();
 
         for (Criterion criterion : criteria) {
             String field = criterion.fieldName();
             Object value = criterion.value();
             Operator op = criterion.operator();
 
+            // Correction: Gérer les chemins imbriqués (ex: "compte.id")
+            Path<?> path = root;
+            String[] pathParts = field.split("\\.");
+            for (String part : pathParts) {
+                path = path.get(part);
+            }
+
             Predicate p = switch (op) {
-                case EQUALS -> cb.equal(root.get(field), value);
-
-                case NOT_EQUALS -> cb.notEqual(root.get(field), value);
-
-                case GREATER_THAN -> cb.greaterThan(
-                        root.get(field), 
-                        (Comparable) value
-                );
-
-                case LESS_THAN -> cb.lessThan(
-                        root.get(field),
-                        (Comparable) value
-                );
-
-                case GREATER_OR_EQUALS -> cb.greaterThanOrEqualTo(
-                        root.get(field),
-                        (Comparable) value
-                );
-
-                case LESS_OR_EQUALS -> cb.lessThanOrEqualTo(
-                        root.get(field),
-                        (Comparable) value
-                );
-
-                case LIKE -> cb.like(
-                        root.get(field),
-                        value.toString()
-                );
-
+                case EQUALS -> cb.equal(path, value);
+                case NOT_EQUALS -> cb.notEqual(path, value);
+                case GREATER_THAN -> cb.greaterThan((Path<Comparable>) path, (Comparable) value);
+                case LESS_THAN -> cb.lessThan((Path<Comparable>) path, (Comparable) value);
+                case GREATER_OR_EQUALS -> cb.greaterThanOrEqualTo((Path<Comparable>) path, (Comparable) value);
+                case LESS_OR_EQUALS -> cb.lessThanOrEqualTo((Path<Comparable>) path, (Comparable) value);
+                case LIKE -> cb.like((Path<String>) path, value.toString());
                 case IN -> {
                     if (value instanceof Collection<?> col) {
-                        yield root.get(field).in(col);
+                        yield path.in(col);
                     } else {
                         throw new IllegalArgumentException("IN operator requires a Collection value");
                     }
                 }
-
                 default -> throw new IllegalArgumentException("Operator not supported: " + op);
             };
 
-            predicates.add(p);
+            if (criterion.or()) {
+                orPredicates.add(p);
+            } else {
+                andPredicates.add(p);
+            }
         }
 
-        cq.where(predicates.toArray(new Predicate[0]));
+        // Combiner les OR
+        Predicate orCombined = orPredicates.isEmpty() ? null : cb.or(orPredicates.toArray(new Predicate[0]));
+        // Combiner les AND
+        Predicate andCombined = andPredicates.isEmpty() ? null : cb.and(andPredicates.toArray(new Predicate[0]));
+
+        // Combiner AND et OR ensemble
+        Predicate finalPredicate;
+        if (orCombined != null && andCombined != null) {
+            finalPredicate = cb.and(andCombined, orCombined);
+        } else if (orCombined != null) {
+            finalPredicate = orCombined;
+        } else {
+            finalPredicate = andCombined;
+        }
+
+        if (finalPredicate != null) {
+            cq.where(finalPredicate);
+        }
+
         return em.createQuery(cq).getResultList();
     }
+
+    public <T> T findOneByCriteria(Class<T> clazz, List<Criterion> criteria) {
+        List<T> results = findByCriteria(clazz, criteria);
+        if (results.isEmpty()) {
+            return null;
+        }
+        if (results.size() > 1) {
+            throw new IllegalStateException("La requête a retourné plus d'un résultat. Attendu: 1, Obtenu: " + results.size());
+        }
+        return results.get(0);
+    }
+
 }

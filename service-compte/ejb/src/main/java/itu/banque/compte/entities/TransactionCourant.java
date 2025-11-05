@@ -3,6 +3,17 @@ package itu.banque.compte.entities;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+
+import itu.banque.api.dtos.TransactionCourantDto;
+import itu.banque.compte.daos.persistence.PersistenceObjectManager;
+import itu.banque.compte.daos.persistence.criteria.Criterion;
+import itu.banque.compte.daos.persistence.criteria.Operator;
 
 @Entity
 @Table(name = "transaction_courant")
@@ -32,6 +43,9 @@ public class TransactionCourant {
 
     @Column(name = "date_transaction")
     private LocalDate dateTransaction = LocalDate.now();
+
+    public TransactionCourant() {
+    }
 
     public TransactionCourant(Integer id, CompteCourant compte, TypeTransaction typeTransaction,
             Virement virementSource, Integer deviseRef, BigDecimal montant, LocalDate dateTransaction) {
@@ -120,4 +134,51 @@ public class TransactionCourant {
         this.dateTransaction = dateTransaction;
     }
 
+    public TransactionCourantDto toDto()
+    {
+        TransactionCourantDto dto = new TransactionCourantDto();
+        dto.setId(id);
+        dto.setIdCompte(compte.getId());
+        dto.setIdTypeTransaction(typeTransaction.getId());
+        dto.setTypeTransactionStr(typeTransaction.getNom());
+        dto.setIdVirementSource(virementSource != null ? virementSource.getId() : null);
+        dto.setMontant(montant);
+        dto.setDeviseRef(deviseRef);
+        dto.setDateTransaction(dateTransaction);
+
+        return dto;
+    }
+
+    public boolean estValide(PersistenceObjectManager pom, LocalDate date) {
+        if(date == null) throw new IllegalArgumentException("La date ne peut pas être nulle");
+
+        LocalDateTime dateTime =  date.atTime(23, 59, 59);
+
+        List<Criterion> criteria = new ArrayList<>();
+        criteria.add(new Criterion("tableReference", "transaction_courant", Operator.EQUALS));
+        criteria.add(new Criterion("idReference", this.id, Operator.EQUALS));
+        criteria.add(new Criterion("dateValidation", dateTime, Operator.LESS_OR_EQUALS));
+
+        List<Validation> resultats = Optional.ofNullable(
+                pom.findByCriteria(Validation.class, criteria)
+            ).orElse(List.of());
+
+        Optional<Validation> latest = resultats.stream()
+                .max(Comparator
+                        .comparing(Validation::getDateValidation)
+                        .thenComparing(Validation::getId)
+                );
+
+        return latest.map(v -> !v.getDateValidation().isAfter(dateTime))
+                    .orElse(false);
+    }
+
+    public Validation valider(Utilisateur utilisateur, LocalDateTime dateValidation)
+    {
+        if(dateValidation == null)
+        {
+            dateValidation = LocalDateTime.now();
+        }
+        return new Validation(null, id, "transaction_courant", utilisateur, dateValidation);
+    }
 }

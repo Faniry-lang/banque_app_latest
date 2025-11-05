@@ -8,6 +8,7 @@ itu/banque/compte/entities/CompteCourant.class
 itu/banque/compte/entities/Utilisateur.class
 itu/banque/compte/entities/FraisBancaire.class
 itu/banque/compte/entities/Client.class
+itu/banque/compte/services/UtilisateurService.class
 itu/banque/compte/services/CompteCourantService.class
 itu/banque/compte/daos/persistence/criteria/Criterion.class
 itu/banque/compte/entities/Validation.class

@@ -26,11 +26,9 @@ public class AuthenticationFilter implements Filter {
         String requestURI = req.getRequestURI();
         String contextPath = req.getContextPath();
 
-        // Public URLs
         boolean isLoginURL = requestURI.equals(contextPath + "/login");
         boolean isLoginJSP = requestURI.equals(contextPath + "/login.jsp");
 
-        // Check if user is logged in
         boolean isLoggedIn = false;
         if (session != null) {
             UtilisateurSessionRemote userSession = (UtilisateurSessionRemote) session.getAttribute("utilisateurSession");
@@ -40,10 +38,8 @@ public class AuthenticationFilter implements Filter {
         }
 
         if (isLoggedIn || isLoginURL || isLoginJSP) {
-            // User is logged in or is accessing a public page, continue chain
             chain.doFilter(request, response);
         } else {
-            // User is not logged in and trying to access a protected page
             res.sendRedirect(contextPath + "/login");
         }
     }

@@ -23,6 +23,9 @@ public class Etat {
     @Column(name = "date_etat", nullable = false)
     private LocalDateTime dateEtat = LocalDateTime.now();
 
+    public Etat() {
+    }
+
     public Etat(Integer id, Integer idReference, String tableReference, Integer etatNum, LocalDateTime dateEtat) {
         this.setId(id);
         this.setIdReference(idReference);

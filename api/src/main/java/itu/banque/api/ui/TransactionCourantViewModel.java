@@ -7,7 +7,6 @@ import java.time.LocalDate;
 public class TransactionCourantViewModel implements Serializable {
     private Integer id;
     private String typeTransaction;
-    private String contexteTransaction;
     private BigDecimal montant;
     private LocalDate dateTransaction;
     private Integer refDevise;
@@ -30,14 +29,6 @@ public class TransactionCourantViewModel implements Serializable {
 
     public void setTypeTransaction(String typeTransaction) {
         this.typeTransaction = typeTransaction;
-    }
-
-    public String getContexteTransaction() {
-        return contexteTransaction;
-    }
-
-    public void setContexteTransaction(String contexteTransaction) {
-        this.contexteTransaction = contexteTransaction;
     }
 
     public BigDecimal getMontant() {

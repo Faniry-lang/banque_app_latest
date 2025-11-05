@@ -12,4 +12,5 @@
 /home/faniry/Documents/GitHub/banque_app/service-compte/ejb/src/main/java/itu/banque/compte/entities/Validation.java
 /home/faniry/Documents/GitHub/banque_app/service-compte/ejb/src/main/java/itu/banque/compte/entities/Virement.java
 /home/faniry/Documents/GitHub/banque_app/service-compte/ejb/src/main/java/itu/banque/compte/services/CompteCourantService.java
+/home/faniry/Documents/GitHub/banque_app/service-compte/ejb/src/main/java/itu/banque/compte/services/UtilisateurService.java
 /home/faniry/Documents/GitHub/banque_app/service-compte/ejb/src/main/java/itu/banque/compte/services/UtilisateurSession.java

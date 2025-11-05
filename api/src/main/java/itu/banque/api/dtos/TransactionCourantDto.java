@@ -9,7 +9,7 @@ public class TransactionCourantDto implements Serializable {
     Integer idCompte;
     BigDecimal montant;
     Integer idTypeTransaction;
-    Integer idContexteTransaction;
+    String typeTransactionStr;
     Integer idVirementSource;
     Integer deviseRef;
     LocalDate dateTransaction;
@@ -31,12 +31,6 @@ public class TransactionCourantDto implements Serializable {
     public void setIdTypeTransaction(Integer idTypeTransaction) {
         this.idTypeTransaction = idTypeTransaction;
     }
-    public Integer getIdContexteTransaction() {
-        return idContexteTransaction;
-    }
-    public void setIdContexteTransaction(Integer idContexteTransaction) {
-        this.idContexteTransaction = idContexteTransaction;
-    }
     public Integer getDeviseRef() {
         return deviseRef;
     }
@@ -48,6 +42,12 @@ public class TransactionCourantDto implements Serializable {
     }
     public void setIdVirementSource(Integer idVirementSource) {
         this.idVirementSource = idVirementSource;
+    }
+    public String getTypeTransactionStr() {
+        return typeTransactionStr;
+    }
+    public void setTypeTransactionStr(String typeTransactionStr) {
+        this.typeTransactionStr = typeTransactionStr;
     }
     
 }

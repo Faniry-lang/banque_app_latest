@@ -3,6 +3,8 @@ package itu.banque.compte.entities;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+import itu.banque.api.dtos.UtilisateurDto;
+
 @Entity
 @Table(name = "utilisateurs")
 public class Utilisateur {
@@ -43,4 +45,15 @@ public class Utilisateur {
 
     public LocalDateTime getDateCreation() { return dateCreation; }
     public void setDateCreation(LocalDateTime dateCreation) { this.dateCreation = dateCreation; }
+
+    public UtilisateurDto toDto()
+    {
+        UtilisateurDto dto = new UtilisateurDto();
+        dto.setId(id);
+        dto.setIdDirection(idDirection);
+        dto.setNom(nom);
+        dto.setRoleLvl(roleLvl);
+
+        return dto;
+    }
 }
